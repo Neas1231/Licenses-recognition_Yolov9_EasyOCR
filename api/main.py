@@ -51,6 +51,7 @@ def predicts(reader):
     for file in cropped:
         img = get_picture(file)
         st.image(img, channels="BGR")
+        img = cv2.resize(img, (640, 256))
         result = reader.recognize(img, detail=0)
         st.write(result[0])
     if len(exp) > 3:
