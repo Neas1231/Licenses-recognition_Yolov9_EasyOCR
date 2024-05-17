@@ -1,1 +1,2 @@
-# Licenses-recognition_Yolov9_EasyOCR
+# Licenses-recognition
+Веб приложение для нахождения и распознования автомобильных номеров на Фото и Видео
