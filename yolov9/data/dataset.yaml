@@ -1,0 +1,5 @@
+names:
+  0: license_plate
+path: ../../projects/Car_licenses_recognition/data/splitted/
+train: train
+val: val
