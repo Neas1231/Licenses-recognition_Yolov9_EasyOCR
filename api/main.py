@@ -38,7 +38,7 @@ def predicts(reader):
         --img 640 \
         --device 0 \
         --source ./data/  \
-        --weights ./yolov9_weights/first_weights/best.pt \
+        --weights ./yolov9_weights/first_weights/best_striped.pt \
         --save-crop \
         --project licenses/detect',
         capture_output=True))
@@ -61,30 +61,37 @@ def predicts(reader):
 
 reader = easyocr.Reader(['en'], recog_network="licenses_model1", model_storage_directory="./EasyOCR/model",
                         user_network_directory="./EasyOCR/user_network", )
-path = st.text_input('Введите путь к изображениям: ')
-uploaded_file = st.file_uploader('Загрузите картинку')
-if path:
-    os.makedirs('./data/', exist_ok=True)
-    print(path)
-    img_paths = get_file_paths(path)
-    st.write('Мы получили ', len(img_paths), ' картинок')
-    for img_path in img_paths:
-        img = get_picture(img_path)
-        cv2.imwrite('./data/img.png', img)
-        st.image(img, channels="BGR")
+option = st.selectbox(
+    "Каким способом вы бы хотели распознать автомобильный номер?",
+    ("Путь к файлам", "Загрузка единичного файла"))
+if option == "Путь к файлам":
+    path = st.text_input('Введите путь к изображениям: ')
+
+    if path:
+        os.makedirs('./data/', exist_ok=True)
+        print(path)
+        img_paths = get_file_paths(path)
+        st.write('Мы получили ', len(img_paths), ' картинок')
+        for img_path in img_paths:
+            img = get_picture(img_path)
+            cv2.imwrite('./data/img.png', img)
+            st.image(img, channels="BGR")
+            st.write('В ходе распознавания мы получи такой результат:')
+            predicts(reader)
+        shutil.rmtree('./data/')
+if option == "Загрузка единичного файла":
+    uploaded_file = st.file_uploader('Загрузите картинку')
+    if uploaded_file is not None:
+        path = ''
+        os.makedirs('./data/', exist_ok=True)
+        write_file(uploaded_file)
+        try:
+            st.image(uploaded_file, channels="BGR")
+        except:
+            try:
+                st.video(uploaded_file)
+            except:
+                st.write('Что-то пошло не так')
         st.write('В ходе распознавания мы получи такой результат:')
         predicts(reader)
-    shutil.rmtree('./data/')
-if uploaded_file is not None:
-    os.makedirs('./data/', exist_ok=True)
-    write_file(uploaded_file)
-    try:
-        st.image(uploaded_file, channels="BGR")
-    except:
-        try:
-            st.video(uploaded_file)
-        except:
-            st.write('Что-то пошло не так')
-    st.write('В ходе распознавания мы получи такой результат:')
-    predicts(reader)
-    shutil.rmtree('./data/')
+        shutil.rmtree('./data/')
