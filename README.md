@@ -1,0 +1,1 @@
+# Licenses-recognition_Yolov9_EasyOCR
