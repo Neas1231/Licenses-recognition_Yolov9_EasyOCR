@@ -1,4 +1,4 @@
-# License_recognition
+# License recognition
 Веб приложение для нахождения и распознования автомобильных номеров на Фото и Видео
 ## Схема работы
 ![License Recognition scheme drawio](https://github.com/user-attachments/assets/d96c8e83-3fcf-4ee2-8ddd-0d43af4e7402)
